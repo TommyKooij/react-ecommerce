@@ -15,6 +15,7 @@ export default function ProductCard({ product }: { product: ProductCardProps }) 
     >
       <img
         src={product.image}
+        alt={product.name}
         className="product-card-image"
       />
       <div className="product-card-content">
