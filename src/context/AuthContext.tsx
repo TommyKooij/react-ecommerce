@@ -1,21 +1,21 @@
 import { createContext, useState, useContext, type ReactNode } from "react";
 
 type User = {
-  email: string | null;
-  password: string | null;
-}
+  email: string;
+  password: string;
+} | null
 
 function createAuthStore() {
   const [user, setUser] = useState<User>(
     localStorage.getItem("currentUser")
       ? { email: localStorage.getItem(JSON.parse("currentUser").email) as string, password: localStorage.getItem(JSON.parse("currentUser").password) as string }
-      : {email: null, password: null},
+      : null,
   );
 
   function signUp(email: string, password: string) {
     const users = JSON.parse(localStorage.getItem("users") || "[]");
 
-    if (users.find((u: User) => u.email === email)) {
+    if (users.find((u: User) => u?.email === email)) {
       return { success: false, error: "Email already exists" };
     }
     const newUser = { email, password };
@@ -31,7 +31,7 @@ function createAuthStore() {
   function login(email: string, password: string) {
     const users = JSON.parse(localStorage.getItem("users") || "[]");
     const user = users.find(
-      (u: User) => u.email === email && u.password === password,
+      (u: User) => u?.email === email && u?.password === password,
     );
 
     if (!user) {
@@ -46,7 +46,7 @@ function createAuthStore() {
 
   function logout() {
     localStorage.removeItem("currentUser");
-    setUser({email: null, password: null});
+    setUser(null);
   }
 
   return {user, setUser, signUp, login, logout}

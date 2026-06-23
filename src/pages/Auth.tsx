@@ -9,7 +9,7 @@ export default function Auth() {
 
   const navigate = useNavigate()
 
-  const { signUp, user, login, logout } = useAuthContext();
+  const { signUp, login } = useAuthContext();
   const { register, handleSubmit, formState: { errors } } = useForm();
   
   function onSubmit(data: FieldValues) {
@@ -33,7 +33,6 @@ export default function Auth() {
     <div className="page">
       <div className="container">
         <div className="auth-container">
-          <button onClick={() => logout()}>Logout</button>
           <h1 className="page-title">
             {mode === "signup" ? "Sign Up" : "Login"}
           </h1>

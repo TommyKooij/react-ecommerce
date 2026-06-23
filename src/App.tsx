@@ -5,6 +5,7 @@ import Checkout from "./pages/Checkout";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import AuthProvider from "./context/AuthContext";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   return (
@@ -23,6 +24,10 @@ function App() {
           <Route
             path="/checkout"
             element={<Checkout />}
+          />
+          <Route
+            path="/products/:id"
+            element={<ProductDetails />}
           />
         </Routes>
       </div>
