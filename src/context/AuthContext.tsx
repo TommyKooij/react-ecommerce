@@ -1,16 +1,18 @@
-import { createContext, useState, useContext, type ReactNode } from "react";
+import { createContext, useState, useContext, type ReactNode, useMemo } from "react";
 
 type User = {
   email: string;
   password: string;
 } | null
 
-function createAuthStore() {
-  const [user, setUser] = useState<User>(
-    localStorage.getItem("currentUser")
-      ? { email: localStorage.getItem(JSON.parse("currentUser").email) as string, password: localStorage.getItem(JSON.parse("currentUser").password) as string }
-      : null,
-  );
+function useAuthStore() {
+  const [user, setUser] = useState<User>(() => {
+    const storedUser = localStorage.getItem("currentUser");
+
+    if (!storedUser) return null;
+
+    return JSON.parse(storedUser);
+  });
 
   function signUp(email: string, password: string) {
     const users = JSON.parse(localStorage.getItem("users") || "[]");
@@ -21,7 +23,7 @@ function createAuthStore() {
     const newUser = { email, password };
     users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("currentUser", JSON.stringify(user));
+    localStorage.setItem("currentUser", JSON.stringify(newUser));
 
     setUser({ email, password });
 
@@ -49,15 +51,25 @@ function createAuthStore() {
     setUser(null);
   }
 
-  return {user, setUser, signUp, login, logout}
+  const value = useMemo(
+    () => ({
+      user,
+      signUp,
+      login,
+      logout,
+    }),
+    [user],
+  );
+
+  return value;
 }
 
-type AuthContextType = ReturnType<typeof createAuthStore>
+type AuthContextType = ReturnType<typeof useAuthStore>
 
-const AuthContext = createContext<AuthContextType>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-  const store = createAuthStore()
+  const store = useAuthStore()
 
   return (
     <AuthContext.Provider value={store}>

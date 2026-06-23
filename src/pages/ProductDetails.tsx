@@ -2,9 +2,17 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getProductById } from "../../data/products";
 
+export type ProductProps = {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+};
+
 export default function ProductDetails() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState<ProductProps | null>(null);
 
   const navigate = useNavigate();
 

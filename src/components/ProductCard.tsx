@@ -1,14 +1,7 @@
 import { Link } from "react-router-dom";
+import type { ProductProps } from "../pages/ProductDetails";
 
-type ProductCardProps = {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-}
-
-export default function ProductCard({ product }: { product: ProductCardProps }) {
+export default function ProductCard({ product }: { product: ProductProps }) {
   return (
     <div
       className="product-card"
