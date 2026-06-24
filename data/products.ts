@@ -1,3 +1,5 @@
+import type { ProductProps } from "../src/pages/ProductDetails";
+
 const products = [
   {
     id: 1,
@@ -77,6 +79,12 @@ export function getProducts() {
   return products;
 }
 
-export function getProductById(id: string | undefined) {
-  return products.find((p) => p.id === Number(id));
+export function getProductById(id: string) {
+  const product = products.find((p: ProductProps) => p.id === Number(id));
+
+  if (!product) {
+    throw new Error(`Product with id ${id} not found`);
+  }
+
+  return product;
 }

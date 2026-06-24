@@ -10,7 +10,7 @@ function useCartStore() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]); // {id: 2, quantity: 7}
 
   function addToCart(productId: string) {
-    const existing = cartItems.find((item) => item.id === productId);
+    const existing = cartItems.find((item: CartItem) => item.id === productId);
 
     if (existing) {
       setCartItems(
@@ -72,7 +72,16 @@ function useCartStore() {
     setCartItems([]);
   }
 
-  return {cartItems, setCartItems, addToCart, getCartItemsWithProducts, removeFromCart, updateQuantity, getCartTotal, clearCart}
+  return {
+    cartItems,
+    setCartItems,
+    addToCart,
+    getCartItemsWithProducts,
+    removeFromCart,
+    updateQuantity,
+    getCartTotal,
+    clearCart,
+  };
 }
 
 type CartContextType = ReturnType<typeof useCartStore>;
@@ -82,13 +91,7 @@ const CartContext = createContext<CartContextType | null>(null);
 export default function CartProvider({ children }: { children: ReactNode }) {
   const store = useCartStore();
 
-  return (
-    <CartContext.Provider
-      value={store}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={store}>{children}</CartContext.Provider>;
 }
 
 export function useCartContext() {

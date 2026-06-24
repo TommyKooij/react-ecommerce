@@ -6,11 +6,13 @@ import Navbar from "./components/Navbar";
 import "./App.css";
 import AuthProvider from "./context/AuthContext";
 import ProductDetails from "./pages/ProductDetails";
+import CartProvider from "./context/CartContext";
 
 function App() {
   return (
     <AuthProvider>
-      <div className="app">
+      <CartProvider>
+        <div className="app">
         <Navbar />
         <Routes>
           <Route
@@ -31,6 +33,7 @@ function App() {
           />
         </Routes>
       </div>
+      </CartProvider>
     </AuthProvider>
   );
 }
